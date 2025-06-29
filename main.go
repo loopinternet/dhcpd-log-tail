@@ -42,7 +42,7 @@ var (
 	dbFile         = flag.String("dbFile", "dhcp.db", "SQLite database file path")
 	logLevel       = flag.String("logLevel", "info", "log level can be trace, debug, info, warn, or error")
 	logTimestamp   = flag.Bool("logTimestamp", true, "show timestamp in logs")
-	initialScan    = flag.Bool("initialScan", false, "scan existing log files on startup")
+	initialScan    = flag.Bool("initialScan", true, "scan existing log files on startup")
 	pollInterval   = flag.Duration("pollInterval", 1*time.Second, "interval for polling log file changes")
 	batchSize      = flag.Int("batchSize", 2000, "number of events to batch for database insertion")
 	bulkOptimize   = flag.Bool("bulkOptimize", false, "enable bulk import optimizations (aggressive pragma settings for faster inserts)")
