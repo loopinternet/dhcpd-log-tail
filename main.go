@@ -1145,8 +1145,12 @@ func shouldSkipFile(filename string, cutoffTime time.Time) (bool, error) {
 		return false, nil // If we can't determine, err on the side of processing
 	}
 
-	// Skip if the file's newest entry is older than or equal to our cutoff
-	shouldSkip := lastTimestamp.Before(cutoffTime) || lastTimestamp.Equal(cutoffTime)
+	// Since we don't have subsecond timestamps, subtract 1 second from cutoff to avoid 
+	// skipping events that occurred in the same second but are newer than database entries
+	adjustedCutoff := cutoffTime.Add(-1 * time.Second)
+	
+	// Skip only if the file's newest entry is older than our adjusted cutoff
+	shouldSkip := lastTimestamp.Before(adjustedCutoff)
 	
 	if shouldSkip {
 		log.Infof("Skipping file %s: newest entry (%s) is older than database cutoff (%s)", 
